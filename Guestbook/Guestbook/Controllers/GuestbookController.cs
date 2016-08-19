@@ -20,10 +20,6 @@ namespace Guestbook.Controllers
     public ViewResult Show(int id)
     {
       var entry = _db.Entries.Find(id);
-      //bool hasPermission = User.Identity.Name == entry.Name;
-      //ViewData["hasPermission"] = hasPermission;
-      var r = _db.Entries.OrderByDescending(r1 => r1.DateAdded).Take(20);
-      ViewBag.Entries = r.ToArray();
       ViewBag.HasPermission = hasPermission;
       return View(entry);
     }
@@ -39,13 +35,8 @@ namespace Guestbook.Controllers
 
     public ActionResult Index()
     {
-      var mostRecentEntries = (from entry in _db.Entries
-                               orderby entry.DateAdded descending
-                               select entry).Take(20);
-
-      //var r = _db.Entries.OrderByDescending(r1 => r1.DateAdded).Take(20);
-      ViewBag.Entries = mostRecentEntries.ToList();
-      return View();
+      var mostRecentEntries = _db.Entries.OrderByDescending(r1 => r1.DateAdded).Take(20);
+      return View(mostRecentEntries.ToList());
     }
   }
 }

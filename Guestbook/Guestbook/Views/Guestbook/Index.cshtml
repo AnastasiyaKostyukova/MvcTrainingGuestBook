@@ -1,4 +1,6 @@
-﻿@{
+﻿@using Guestbook.Models
+@model List<GuestbookEntry>
+@{
     ViewBag.Title = "Index";
     
 }
@@ -7,7 +9,7 @@
 <p>
     <a href="/Guestbook/Create">Add a new entry</a>
 </p>
-@foreach (var entry in ViewBag.Entries)  
+@foreach (var entry in Model)  
 {
 <section class="contact">
     <header>
