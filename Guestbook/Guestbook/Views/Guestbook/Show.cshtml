@@ -1,0 +1,17 @@
+﻿
+@{
+    ViewBag.Title = "Show";
+}
+
+<h2>Show</h2>
+
+<p>Posted by @ViewBag.Entries[Model.Id].Name</p>
+
+<p>
+    @if (ViewBag.HasPermission)
+    {
+     @Html.ActionLink("Edit", "Edit", new {id = Model.Id})
+    }
+    <br/>
+    @Html.ActionLink("Back to Entries", "Index")
+</p>
