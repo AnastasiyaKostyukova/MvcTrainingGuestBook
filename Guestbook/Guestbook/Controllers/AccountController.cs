@@ -15,8 +15,24 @@ namespace Guestbook.Controllers
       return View();
     }
 
+    public ActionResult ChangePassword()
+    {
+      return View();
+    }
+
     [HttpPost]
     public ActionResult LogOn(LogOnModel logOn)
+    {
+      if (ModelState.IsValid)
+      {
+        return RedirectToAction("Index", "Guestbook");
+      }
+      ModelState.AddModelError("", "Invalid form info");
+      return View();
+    }
+
+    [HttpPost]
+    public ActionResult ChangePassword(ChangePasswordModel changedPass)
     {
       if (ModelState.IsValid)
       {
