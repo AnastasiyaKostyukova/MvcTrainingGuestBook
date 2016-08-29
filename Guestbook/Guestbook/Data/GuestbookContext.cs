@@ -14,5 +14,6 @@ namespace Guestbook.Data
     }
 
     public DbSet<GuestbookEntry> Entries { get; set; }
+		public DbSet<User> Users { get; set; } 
   }
 }

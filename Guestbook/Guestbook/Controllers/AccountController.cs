@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Guestbook.Data;
 using Guestbook.Models;
 
 namespace Guestbook.Controllers
 {
   public class AccountController : Controller
   {
+		private GuestbookContext _dbGuestbookContext = new GuestbookContext();
     // GET: Account
     public ActionResult LogOn()
     {
@@ -20,16 +22,47 @@ namespace Guestbook.Controllers
       return View();
     }
 
+	  public ActionResult LogIn()
+	  {
+		  return View();
+	  }
+
     [HttpPost]
     public ActionResult LogOn(LogOnModel logOn)
     {
       if (ModelState.IsValid)
       {
+				var user = new User();
+	      user.UserName = logOn.UserName;
+	      user.Password = logOn.Password;
+	      user.Email = logOn.Email.ToLower();
+	      _dbGuestbookContext.Users.Add(user);
+	      _dbGuestbookContext.SaveChanges();
         return RedirectToAction("Index", "Guestbook");
       }
       ModelState.AddModelError("", "Invalid form info");
       return View();
     }
+
+	  [HttpPost]
+	  public ActionResult LogIn(LogInModel logIn)
+	  {
+		  if (ModelState.IsValid)
+		  {
+			  var user = _dbGuestbookContext.Users.FirstOrDefault(m => m.Email == logIn.Email.ToLower());
+
+			  if (user != null && user.Password == logIn.Password)
+			  {
+					return RedirectToAction("Index", "Guestbook");
+				}
+
+				ModelState.AddModelError("", "Invalid email or password");
+				return View();				
+			}
+			
+			ModelState.AddModelError("", "Invalid form info");
+			return View();
+	  }
 
     [HttpPost]
     public ActionResult ChangePassword(ChangePasswordModel changedPass)
