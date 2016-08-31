@@ -15,7 +15,7 @@ namespace Guestbook.Models
     [Required]
     [Display(Name = "Confirm Password")]
     [DataType(DataType.Password)]
-    [Compare("Password", ErrorMessage = "Confirm password doesn't match, Type again !")]
+    [Compare("Password", ErrorMessage = "Confirm password doesn't match, Type again!")]
     public string ConfirmPassword { get; set; }
 
     [Display(Name = "Remember me?")]
