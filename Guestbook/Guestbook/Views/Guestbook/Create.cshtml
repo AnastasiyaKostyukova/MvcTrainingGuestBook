@@ -1,22 +1,34 @@
 ﻿@{
-    ViewBag.Title = "Add new entry";
+	ViewBag.Title = "Add new entry";
 }
+
+@using Guestbook.Models
+@model GuestbookEntry
+
+
 <h2>Add new entry</h2>
-<form method="post" action="">
-<fieldset>
-    Please enter your name:
-    <br />
-    <input type="text" name="Name" maxlength="200" />
-    <br />
-    <br />
-     Please enter your message:
-    <br />
-    <textarea name="Message" rows="10" cols="40">
-    </textarea>
-    <br />
-    <br />
-    <input type="submit" value="Submit Entry" />
-</fieldset>
-</form>
 
+@using (Html.BeginForm())
+{
 
+	<div>
+		<fieldset>
+			<div class="editor-label">
+				@Html.LabelFor(m => m.Name)
+			</div>
+			<div class="editor-field">
+				@Html.TextBoxFor(m => m.Name)
+			</div>
+		</fieldset>
+
+		<fieldset>
+			<div class="editor-label">
+				@Html.LabelFor(m => m.Message)
+			</div>
+			<div class="editor-field">
+				@Html.TextAreaFor(m => m.Message)
+			</div>
+		</fieldset>
+		<input type="submit" value="Create" />
+	</div>
+}

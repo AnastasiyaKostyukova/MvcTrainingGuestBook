@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using Guestbook.Helpers
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -19,14 +20,21 @@
                 @*@Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })*@
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Guest book page", "Index", "Guestbook")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-	                <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-	                <li>@Html.ActionLink("LogOn", "LogOn", "Account")</li>
-									<li>@Html.ActionLink("LogIn", "LogIn", "Account")</li>
-                </ul>
+	            <ul class="nav navbar-nav">
+								@{
+									if (AuthHelper.IsAuthorized)
+									{
+										<li style="color: white; font-size: 24px;">@Html.Label(AuthHelper.User)</li>
+									}
+								}
+		            <li>@Html.ActionLink("Home", "Index", "Home")</li>
+		            <li>@Html.ActionLink("Guest book page", "Index", "Guestbook")</li>
+		            <li>@Html.ActionLink("About", "About", "Home")</li>
+		            <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+		            <li>@Html.ActionLink("LogOn", "LogOn", "Account")</li>
+		            <li>@Html.ActionLink("LogIn", "LogIn", "Account")</li>
+		            <li>@Html.ActionLink("Log out", "LogOut", "Account")</li>
+	            </ul>
             </div>
         </div>
     </div>

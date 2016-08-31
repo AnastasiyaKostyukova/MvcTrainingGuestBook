@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Guestbook.Data;
+using Guestbook.Helpers;
 using Guestbook.Models;
 
 namespace Guestbook.Controllers
@@ -38,6 +39,8 @@ namespace Guestbook.Controllers
 	      user.Email = logOn.Email.ToLower();
 	      _dbGuestbookContext.Users.Add(user);
 	      _dbGuestbookContext.SaveChanges();
+
+	      AuthHelper.User = user.UserName;
         return RedirectToAction("Index", "Guestbook");
       }
       ModelState.AddModelError("", "Invalid form info");
@@ -53,6 +56,7 @@ namespace Guestbook.Controllers
 
 			  if (user != null && user.Password == logIn.Password)
 			  {
+					AuthHelper.User = user.UserName;
 					return RedirectToAction("Index", "Guestbook");
 				}
 
@@ -74,5 +78,11 @@ namespace Guestbook.Controllers
       ModelState.AddModelError("", "Invalid form info");
       return View();
     }
+
+	  public ActionResult LogOut()
+	  {
+		  AuthHelper.User = null;
+			return RedirectToAction("Index", "Guestbook");
+		}
   }
 }

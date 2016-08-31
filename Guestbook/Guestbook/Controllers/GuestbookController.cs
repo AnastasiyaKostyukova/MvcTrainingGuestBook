@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Guestbook.Helpers;
 
 namespace Guestbook.Controllers
 {
@@ -15,13 +16,19 @@ namespace Guestbook.Controllers
     private GuestbookContext _db = new GuestbookContext();
     public ActionResult Create()
     {
-      return View();
+			var model = new GuestbookEntry();
+	    model.Name = AuthHelper.User;
+
+      return View(model);
     }
     public ViewResult Show(int id)
     {
       var entry = _db.Entries.Find(id);
-      ViewBag.HasPermission = hasPermission;
-      return View(entry);
+
+	    var userName = AuthHelper.User;
+			ViewBag.HasPermission = AuthHelper.IsAuthorized;
+
+			return View(entry);
     }
 
 	  public ActionResult CommentSummary()
@@ -50,14 +57,33 @@ namespace Guestbook.Controllers
 
     public ActionResult Index()
     {
-      var mostRecentEntries = 
-				_db.Entries.OrderByDescending(r1 => r1.DateAdded).Take(20);
+    //  var mostRecentEntries = 
+				//_db.Entries`
 
 			/* var mostRecentEntries = (from entry in _db.Entries
 			 * orderby entry.DateAdded descending 
 			 * select entry).Take(20);
 			 * ViewBag.Entries = mostRecentEntries.ToList();*/
-      return View(mostRecentEntries.ToList());
+
+	    var mostRecentEntries = new List<GuestbookEntry>();
+
+	    if (AuthHelper.IsAuthorized)
+	    {
+		    mostRecentEntries = _db.Entries
+			    .Where(x => x.Name == AuthHelper.User)
+			    .OrderByDescending(r1 => r1.DateAdded)
+			    .Take(20)
+			    .ToList();
+	    }
+	    else
+	    {
+				mostRecentEntries = _db.Entries
+					.OrderByDescending(r1 => r1.DateAdded)
+					.Take(20)
+					.ToList();
+			}
+			
+      return View(mostRecentEntries);
     }
   }
 }
